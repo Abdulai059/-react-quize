@@ -1,10 +1,15 @@
-import DateCounter from "./component/DateCounter";
-import "./App.css";
+import Header from "./component.jsx/Header";
+import Main from "./component.jsx/Main";
 
 function App() {
   return (
-    <div>
-      <DateCounter />;
+    <div className="app">
+      <Header />
+
+      <Main>
+        <p>1/15</p>
+        <p>Question</p>
+      </Main>
     </div>
   );
 }
