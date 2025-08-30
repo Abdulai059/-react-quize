@@ -1,47 +1,83 @@
 import { useEffect, useReducer } from "react";
-import Header from "./component.jsx/Header";
-import Main from "./component.jsx/Main";
-import Loader from "./component.jsx/Loader";
-import Error from "./component.jsx/Error";
-import StartScreen from "./component.jsx/StartScreen";
-
+import Header from "./component/Header";
+import Main from "./component/Main";
+import Loader from "./component/Loader";
+import Error from "./component/Error";
+import StartScreen from "./component/StartScreen";
+import Question from "./component/Question";
+import NextButton from "./component/NextButton";
+import Progress from "./component/Progress.jsx";
 // Initial state
 const initialization = {
   questions: [],
 
   // 'loading', 'error', 'ready', 'active', 'finished'
   status: "loading",
+  index: 0,
+  answer: null,
+  points: 0,
 };
 
-function App() {
-  const [{ questions, status }, dispatch] = useReducer(reducer, initialization);
+// Reducer
+function reducer(state, action) {
+  switch (action.type) {
+    case "dataReceived":
+      return {
+        ...state,
+        questions: action.payload,
+        status: "ready",
+      };
+    case "dataFailed":
+      return {
+        ...state,
+        status: "error",
+      };
+    case "start":
+      return {
+        ...state,
+        status: "active",
+      };
+    case "newAnswer":
+      const question = state.questions[state.index];
 
-  // Reducer
-  function reducer(state, action) {
-    switch (action.type) {
-      case "dataReceived":
-        return {
-          ...state,
-          questions: action.payload,
-          status: "ready",
-        };
-      case "data Failed":
-        return {
-          ...state,
-          status: "error",
-        };
+      return {
+        ...state,
+        answer: action.payload,
+        points:
+          action.payload === question.correctOption
+            ? state.points + question.points
+            : state.points,
+      };
 
-      default:
-        throw new Error("Action unknown");
-    }
+    case "nextQuestion":
+      return {
+        ...state,
+        index: state.index + 1,
+        answer: null,
+      };
+
+    default:
+      throw new Error("Action unknown");
   }
+}
+
+function App() {
+  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
+    reducer,
+    initialization
+  );
+
   const numQuestions = questions.length;
+  const maxPossiblePoints = questions.reduce(
+    (prev, cur) => prev + cur.points,
+    0
+  );
 
   useEffect(function () {
     fetch("http://localhost:8000/questions")
       .then((res) => res.json())
       .then((data) => dispatch({ type: "dataReceived", payload: data }))
-      .catch((err) => dispatch({ type: "data Failed" }));
+      .catch(() => dispatch({ type: "dataFailed" }));
   }, []);
 
   return (
@@ -51,7 +87,26 @@ function App() {
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
-        {status === "ready" && <StartScreen numQuestions={numQuestions} />}
+        {status === "ready" && (
+          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+        )}
+        {status === "active" && (
+          <>
+            <Progress
+              index={index}
+              numQuestions={numQuestions}
+              points={points}
+              maxPossiblePoints={maxPossiblePoints}
+              answer={answer}
+            />
+            <Question
+              question={questions[index]}
+              dispatch={dispatch}
+              answer={answer}
+            />
+            <NextButton dispatch={dispatch} answer={answer} />
+          </>
+        )}
       </Main>
     </div>
   );
