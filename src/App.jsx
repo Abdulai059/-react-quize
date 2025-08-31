@@ -11,7 +11,7 @@ import FinishScreen from "./component/FinishScreen.jsx";
 import Timer from "./component/Timer.jsx";
 import Footer from "./component/Footer.jsx";
 
-const SECS_PER_QUESTION = 30;
+const SECS_PER_QUESTION = 20;
 
 // Initial state
 const initialization = {
