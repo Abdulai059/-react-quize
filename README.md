@@ -1,12 +1,46 @@
-# React + Vite
+# 🎯 React Quiz App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and responsive **Quiz Application** built with React.  
+It fetches quiz questions dynamically from a **JSON Server (Fake REST API)**, making it easy to simulate real backend integration while keeping everything lightweight for development.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📸 Preview
 
-## Expanding the ESLint configuration
+<p align="center">
+  <img src="public/react-quize.png" alt="Quiz App Preview" width="600"/>
+</p>
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+---
+
+## ✨ Features
+- ⚡ Built with **React (Hooks + Components)**
+- 📡 **JSON Server Fake API** for quiz questions
+- 📱 Fully **responsive UI** (mobile & desktop friendly)
+- ⏱️ Countdown **timer** for each quiz session
+- ✅ Instant feedback on answers (correct/wrong states)
+- 🏆 Score tracking & high score memory
+- 🔄 Smooth loading states with a custom loader
+
+---
+
+## 🛠️ Tech Stack
+- **React** (CRA or Vite)
+- **JSON Server** (for simulating backend)
+- **CSS** (custom responsive styling with Flexbox/Grid & media queries)
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/your-username/react-quiz-app.git
+cd react-quiz-app
+
+npm install
+npm install -g json-server
+npx json-server --watch db.json --port 4000
+json-server --watch db.json --port 4000
+npm run dev
